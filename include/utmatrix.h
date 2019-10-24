@@ -62,66 +62,149 @@ public:
 template <class ValType>
 TVector<ValType>::TVector(int s, int si)
 {
+	if ((s > MAX_VECTOR_SIZE)||(s<0)) {
+		throw - 3;
+	}
+	if ((si >= MAX_VECTOR_SIZE) || (si < 0)) {
+		throw - 4;
+	}
+	Size = s;
+	StartIndex = si;
+	pVector = new ValType[Size];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> //конструктор копирования
 TVector<ValType>::TVector(const TVector<ValType> &v)
 {
+	Size = v.Size;
+	StartIndex = v.StartIndex;
+	pVector = new ValType[Size];
+	for (int i = StartIndex; i < Size; i++) {
+		pVector[i] = v.pVector[i];
+	}
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType>
 TVector<ValType>::~TVector()
 {
+	delete[] pVector;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int pos)
 {
+	if ((pos >= Size) || (pos < 0)) throw - 1;
+	else return pVector[pos];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TVector<ValType>::operator==(const TVector &v) const
 {
+	if (Size != v.Size) return 0;
+	//нужны ли тут условия для StartIndex?
+	for (int i = StartIndex; i < Size; i++) {
+		if (pVector[i] != v.pVector[i]) return 0;
+	}
+	return 1;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TVector<ValType>::operator!=(const TVector &v) const
 {
+	return !(*this == v); //ээээ?
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // присваивание
 TVector<ValType>& TVector<ValType>::operator=(const TVector &v)
 {
+	//gross
+	/*if (Size != v.Size) {
+		throw - 2;
+	}*/
+	//else 
+	if (this == &v) {
+		return *this;
+	}
+	else {
+		delete[] pVector;
+		Size = v.Size;
+		pVector = new ValType[Size];
+		StartIndex = v.StartIndex;
+		for (int i = StartIndex; i < Size; i++) {
+			pVector[i] = v.pVector[i];
+		}
+		return *this;
+	}
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // прибавить скаляр
 TVector<ValType> TVector<ValType>::operator+(const ValType &val)
 {
+	for (int i = StartIndex; i < Size; i++) {
+		pVector[i] += val;
+	}
+	return *this;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычесть скаляр
 TVector<ValType> TVector<ValType>::operator-(const ValType &val)
 {
+	for (int i = StartIndex; i < Size; i++) {
+		pVector[i] -= val;
+	}
+	return *this;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // умножить на скаляр
 TVector<ValType> TVector<ValType>::operator*(const ValType &val)
 {
+	for (int i = StartIndex; i < Size; i++) {
+		pVector[i] *= val;
+	}
+	return *this;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сложение
 TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
 {
+	if (Size != v.Size) {
+		throw - 2;
+	}
+	else {
+		for (int i = StartIndex; i < Size; i++) {
+			pVector[i] += v.pVector[i];
+		}
+		return *this;
+	}
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычитание
 TVector<ValType> TVector<ValType>::operator-(const TVector<ValType> &v)
 {
+	if (Size != v.Size) {
+		throw - 2;
+	}
+	else {
+		for (int i = StartIndex; i < Size; i++) {
+			pVector[i] -= v.pVector[i];
+		}
+		return *this;
+	}
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // скалярное произведение
 ValType TVector<ValType>::operator*(const TVector<ValType> &v)
 {
+	if (Size != v.Size) {
+		throw - 2;
+	}
+	else {
+		ValType Sum = 0;
+		for (int i = StartIndex; i < Size; i++) {
+			Sum = Sum + (pVector[i] * v.pVector[i]);
+		}
+		return Sum;
+	}
 } /*-------------------------------------------------------------------------*/
 
 
