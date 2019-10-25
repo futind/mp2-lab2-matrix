@@ -40,6 +40,7 @@ TEST(TVector, copied_vector_is_equal_to_source_one)
 
 TEST(TVector, copied_vector_has_its_own_memory)
 {
+	//оепедекюрэ, мсфмн гюмскхрэ щкелемр б ндмнл, ю б дпсцнл нярюбхрэ, япюбмхрэ ху х нмх днкфмш ашрэ ме пюбмш, якеднбюрекэмн с йюфднцн ябнъ оюлърэ
 	TVector<double> v(1);
 	v[0] = 20;
 	TVector<double> v1(v);
@@ -72,14 +73,14 @@ TEST(TVector, can_set_and_get_element)
 TEST(TVector, throws_when_set_element_with_negative_index)
 {
 	TVector<int> v(4);
-	ASSERT_ANY_THROW(v[-1] = 0);
+	ASSERT_ANY_THROW(v[-1]);
   //ADD_FAILURE();
 }
 
 TEST(TVector, throws_when_set_element_with_too_large_index)
 {
 	TVector<int> v(4);
-	ASSERT_ANY_THROW(v[MAX_VECTOR_SIZE+1] = 0);
+	ASSERT_ANY_THROW(v[MAX_VECTOR_SIZE+1]);
   //ADD_FAILURE();
 }
 
@@ -128,7 +129,7 @@ TEST(TVector, compare_equal_vectors_return_true)
 	TVector<double> v(3);
 	v[0] = 0.3; v[1] = 2.3; v[2] = 4.3;
 	TVector<double> vcopy(v);
-	EXPECT_EQ(1, v == vcopy);
+	EXPECT_EQ(v, vcopy);
   //ADD_FAILURE();
 }
 
